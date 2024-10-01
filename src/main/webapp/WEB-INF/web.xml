@@ -3,22 +3,5 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
-<!--    <servlet>-->
-<!--        <servlet-name>default</servlet-name>-->
-<!--        <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>-->
-<!--        <load-on-startup>1</load-on-startup>-->
-<!--    </servlet>-->
-<!--    <servlet-mapping>-->
-<!--        <servlet-name>default</servlet-name>-->
-<!--        <url-pattern>/resources/*</url-pattern>-->
-<!--    </servlet-mapping>-->
-<!--    <servlet>-->
-<!--        <servlet-name>jsp-pages</servlet-name>-->
-<!--        <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class> &lt;!&ndash; Jakarta EE JSP Servlet &ndash;&gt;-->
-<!--    </servlet>-->
 
-<!--    <servlet-mapping>-->
-<!--        <servlet-name>jsp-pages</servlet-name>-->
-<!--        <url-pattern>/pages/*</url-pattern>-->
-<!--    </servlet-mapping>-->
 </web-app>

@@ -21,7 +21,6 @@ public class RequestServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/pages/simulator.jsp");
         dispatcher.forward(request , response);
 
-
     }
     @Override
     public void destroy() {}

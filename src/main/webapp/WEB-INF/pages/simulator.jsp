@@ -2,9 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Credit Bank</title>
+    <title>Demander mon crédit en ligne</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/globals.css">
-    <script defer src="${pageContext.request.contextPath}/static/js/scripts.js"></script>
+    <script type="module" defer src="${pageContext.request.contextPath}/static/js/globals.js"></script>
+    <link rel="icon" href="../../static/img/favicon-16x16.png"/>
 </head>
 <body>
 <div class="app">
@@ -16,15 +17,15 @@
             <form action="" id="form_data">
                 <div class="simulator">
                     <div class="steps__wrapper">
-                        <div class="step active" onclick="goBackStep()">
+                        <div class="step active" >
                             <span class="number_step">1</span>
                             Simuler mon crédit
                         </div>
-                        <div class="step" onclick="goBackStep()">
+                        <div class="step">
                             <span class="number_step">2</span>
                             Mes coordonnées
                         </div>
-                        <div class="step" onclick="goBackStep()">
+                        <div class="step">
                             <span class="number_step">3</span>
                             Mes infos personnelles
                         </div>
@@ -50,7 +51,7 @@
                             </div>
                             <div class="select_group">
                                 <label>Je suis</label>
-                                <select id="profession" name="job" id="">
+                                <select id="profession" name="job">
                                     <option value="SALARIE_PRIVE">
                                         Salarié du secteur privé
                                     </option>
@@ -72,23 +73,21 @@
                                 <label for="">Montant (en DH)</label>
                                 <div class="simulator_range">
                                     <input
-                                            id="amount_number"
+                                            id="amountText"
                                             readonly
                                             class="field_number amount"
                                             type="number"
-                                            step="any"
+                                            step="1000"
                                             name="amount"
-                                            value="500000"
                                             aria-invalid="false"
                                     />
                                     <div>
                                         <input
-                                                id="amount_range"
-                                                class="range_field"
-                                                type="range"
-                                                min="5000"
-                                                max="600000"
-                                                step="1000"
+                                            id="amountInput"
+                                            class="range_field"
+                                            type="range"
+                                            min="5000"
+                                            step="1000"
                                         />
                                     </div>
                                 </div>
@@ -98,12 +97,12 @@
                                 <label>Durée (en mois)</label>
                                 <div class="simulator_range">
                                     <input
-                                            id="months"
+                                            id="monthsText"
                                             class="field_number duration"
                                             readonly
                                             type="number"
-                                            step="any"
-                                            value="24"
+                                            step="6"
+                                            value="12"
                                             name="duration"
                                             aria-invalid="false"
                                     />
@@ -111,10 +110,7 @@
                                         <input
                                                 class="range_field"
                                                 type="range"
-                                                min="12"
-                                                max="120"
                                                 step="1"
-                                                value="24"
                                                 id="months_range"
                                         />
                                     </div>
@@ -129,7 +125,7 @@
                                             readonly
                                             id="monthlyNumber"
                                             type="number"
-                                            step="1"
+                                            step="any"
                                             name="monthly"
                                             value=""
                                             aria-invalid="false"
@@ -168,17 +164,15 @@
                                     type="text"
                                     name="email"
                                     required
-                                    id=""
                                     placeholder="email"
                             />
                             <input
                                     type="text"
                                     name="phone"
-                                    id=""
                                     required
                                     placeholder="phone"
                             />
-                            <div class="submit__button" id="goToStep_3">
+                            <div class="submit__button" id="">
                     <span class="btn btn_primary">
                       Continuer
                       <small>Sans engagement</small>
@@ -201,13 +195,11 @@
                                     type="text"
                                     name="email"
                                     required
-                                    id=""
                                     placeholder="email"
                             />
                             <input
                                     type="text"
                                     name="phone"
-                                    id=""
                                     required
                                     placeholder="phone"
                             />
