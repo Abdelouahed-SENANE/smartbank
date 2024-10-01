@@ -1,4 +1,29 @@
 package ma.youcode.smartbank.controllers;
 
-public class RequestServlet {
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+
+@WebServlet("/simulateur")
+public class RequestServlet extends HttpServlet {
+    private String message;
+    public void init() {
+    }
+
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException , ServletException {
+        response.setContentType("text/html");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/pages/simulator.jsp");
+        dispatcher.forward(request , response);
+
+
+    }
+    @Override
+    public void destroy() {}
+
 }

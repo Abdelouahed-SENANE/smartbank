@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "sass": "^1.79.4"
+  },
+  "scripts": {
+    "observer" : "sass -w src/main/webapp/static/sass/globals.sass src/main/webapp/static/css/globals.css",
+  }
+}
