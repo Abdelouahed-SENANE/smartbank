@@ -17,7 +17,7 @@
             <form action="" id="form_data">
                 <div class="simulator">
                     <div class="steps__wrapper">
-                        <div class="step active" >
+                        <div class="step active">
                             <span class="number_step">1</span>
                             Simuler mon crédit
                         </div>
@@ -32,193 +32,236 @@
                     </div>
 
                     <div class="simulator_wrapper">
-                        <div id="step__1" style="display: block">
-                            <div class="select_group">
-                                <label>Mon projet</label>
-                                <select name="project" id="">
-                                    <option value="PRET_PERSONNEL">
-                                        J’ai besoin d’argent
-                                    </option>
-                                    <option value="OCCASION">
-                                        Je finance mon véhicule d’occasion
-                                    </option>
-                                    <option value="REV">Je Gère mes imprévus</option>
-                                    <option value="CREDIT_AUTOMOBILE">
-                                        Je finance mon véhicule neuf
-                                    </option>
-                                    <option value="CREDIT_MENAGE">J’équipe ma maison</option>
-                                </select>
-                            </div>
-                            <div class="select_group">
-                                <label>Je suis</label>
-                                <select id="profession" name="job">
-                                    <option value="SALARIE_PRIVE">
-                                        Salarié du secteur privé
-                                    </option>
-                                    <option selected value="SALARIE_PUBLIC">
-                                        Fonctionnaire
-                                    </option>
-                                    <option value="PROFESSION_LIBERALE">
-                                        Profession libérale
-                                    </option>
-                                    <option value="COMMERCANT">Commerçant</option>
-                                    <option value="ARTISAN">Artisan</option>
-                                    <option value="RETRAITE">Retraité</option>
-                                    <option value="AUTRE">Autres professions</option>
-                                </select>
-                                <span></span>
-                            </div>
+                        <div class="phases">
 
-                            <div class="simulator_amount">
-                                <label for="">Montant (en DH)</label>
-                                <div class="simulator_range">
-                                    <input
-                                            id="amountText"
-                                            readonly
-                                            class="field_number amount"
-                                            type="number"
-                                            step="1000"
-                                            name="amount"
-                                            aria-invalid="false"
-                                    />
-                                    <div>
+                            <%--  ==== phase 1 =====--%>
+                            <div class="phase" style="display: block">
+                                <div class="select_group">
+                                    <label>Mon projet</label>
+                                    <select name="project" id="project">
+                                        <option value="PRET_PERSONNEL">
+                                            J’ai besoin d’argent
+                                        </option>
+                                        <option value="OCCASION">
+                                            Je finance mon véhicule d’occasion
+                                        </option>
+                                        <option value="REV">Je Gère mes imprévus</option>
+                                        <option value="CREDIT_AUTOMOBILE">
+                                            Je finance mon véhicule neuf
+                                        </option>
+                                        <option value="CREDIT_MENAGE">J’équipe ma maison</option>
+                                    </select>
+                                    <span class="selected-option"></span>
+                                </div>
+                                <div class="select_group">
+                                    <label>Je suis</label>
+                                    <select id="profession" name="job">
+                                        <option value="SALARIE_PRIVE">
+                                            Salarié du secteur privé
+                                        </option>
+                                        <option selected value="SALARIE_PUBLIC">
+                                            Fonctionnaire
+                                        </option>
+                                        <option value="PROFESSION_LIBERALE">
+                                            Profession libérale
+                                        </option>
+                                        <option value="COMMERCANT">Commerçant</option>
+                                        <option value="ARTISAN">Artisan</option>
+                                        <option value="RETRAITE">Retraité</option>
+                                        <option value="AUTRE">Autres professions</option>
+                                    </select>
+                                    <span class="selected-option"></span>
+                                </div>
+
+                                <div class="simulator_amount">
+                                    <label for="">Montant (en DH)</label>
+                                    <div class="simulator_range">
                                         <input
-                                            id="amountInput"
-                                            class="range_field"
-                                            type="range"
-                                            min="5000"
-                                            step="1000"
+                                                id="amountText"
+                                                readonly
+                                                class="field_number amount"
+                                                type="number"
+                                                step="1000"
+                                                name="amount"
+                                                aria-invalid="false"
                                         />
+                                        <div>
+                                            <input
+                                                    id="amountInput"
+                                                    class="range_field"
+                                                    type="range"
+                                                    min="5000"
+                                                    step="1000"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="simulator_amount">
-                                <label>Durée (en mois)</label>
-                                <div class="simulator_range">
-                                    <input
-                                            id="monthsText"
-                                            class="field_number duration"
-                                            readonly
-                                            type="number"
-                                            step="6"
-                                            value="12"
-                                            name="duration"
-                                            aria-invalid="false"
-                                    />
-                                    <div>
+                                <div class="simulator_amount">
+                                    <label>Durée (en mois)</label>
+                                    <div class="simulator_range">
                                         <input
-                                                class="range_field"
-                                                type="range"
-                                                step="1"
-                                                id="months_range"
+                                                id="monthsText"
+                                                class="field_number duration"
+                                                readonly
+                                                type="number"
+                                                step="6"
+                                                value="12"
+                                                name="duration"
+                                                aria-invalid="false"
                                         />
+                                        <div>
+                                            <input
+                                                    class="range_field"
+                                                    type="range"
+                                                    step="1"
+                                                    id="months_range"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="simulator_amount">
-                                <label for="">Mensualités (en DH)</label>
-                                <div class="simulator_range">
-                                    <input
-                                            class="field_number monthly"
-                                            readonly
-                                            id="monthlyNumber"
-                                            type="number"
-                                            step="any"
-                                            name="monthly"
-                                            value=""
-                                            aria-invalid="false"
-                                    />
-                                    <div>
+                                <div class="simulator_amount">
+                                    <label for="">Mensualités (en DH)</label>
+                                    <div class="simulator_range">
                                         <input
-                                                class="range_field"
-                                                type="range"
-                                                step="1"
-                                                id="monthlyRange"
+                                                class="field_number monthly"
+                                                readonly
+                                                id="monthlyNumber"
+                                                type="number"
+                                                step="any"
+                                                name="monthly"
+                                                value=""
+                                                aria-invalid="false"
                                         />
+                                        <div>
+                                            <input
+                                                    class="range_field"
+                                                    type="range"
+                                                    step="1"
+                                                    id="monthlyRange"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
+
+                                <input id="fees" type="text" value="" name="fees"/>
+                            </div>
+                            <%-- ====== Phase 2 ========--%>
+                            <div class="phase" style="display: none">
+                                <div class="form_control">
+                                    <label class="label_form invalid" for="email">Email*</label>
+                                    <input class="field_form" name="email" id="email" type="text" placeholder="Email*">
+                                </div>
+                                <div class="form_control">
+                                    <label class="label_form" for="email"> Téléphone mobile*</label>
+                                    <input class="field_form " name="phone" id="phone" type="text" placeholder="Téléphone mobile*">
+                                </div>
+                            </div>
+                            <%-- ==== phase 3 ======= --%>
+                            <div class="phase" style="display: none">
+                                <fieldset>
+                                    <legend class="pannel_heading">
+                                        <span>Civilité</span>
+                                    </legend>
+                                    <div class="fieldset_wrapper">
+                                        <div class="fieldset_control">
+                                            <label>
+                                                <input type="radio" checked name="civility" placeholder=" " value="MADAME"/>
+                                                <span class="custom_field"></span>
+                                                <span>Madame</span>
+                                            </label>
+                                        </div>
+                                        <div class="fieldset_control">
+                                            <label>
+                                                <input type="radio" name="civility" placeholder=" " value="MADEMOISELLE"/>
+                                                <span class="custom_field"></span>
+                                                <span>Mademoiselle</span>
+
+                                            </label>
+
+                                        </div>
+                                        <div class="fieldset_control">
+                                            <label>
+                                                <input type="radio" name="civility" placeholder=" " value="MONSIEUR"/>
+                                                <span class="custom_field"></span
+                                                <span>Monsieur</span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <div class="form_control">
+                                    <label class="label_form invalid" for="lastName">Nom*</label>
+                                    <input class="field_form" name="last_name" id="lastName" type="text" placeholder="Nom*">
+                                </div>
+
+                                <div class="form_control">
+                                    <label class="label_form invalid" for="firstName">Prénom*</label>
+                                    <input class="field_form" name="first_name" id="firstName" type="text" placeholder=" Prénom*">
+                                </div>
+
+                                <div class="form_control">
+                                    <label class="label_form invalid" for="cin"> Numéro CIN / Carte de séjour*</label>
+                                    <input class="field_form" name="cin" id="cin" type="text" placeholder=" Numéro CIN / Carte de séjour*">
+                                </div>
+
+                                <div class="form_control">
+                                    <label class="label_form invalid" for="edit_birth_date"> Date de naissance**</label>
+                                    <input class="field_form" name="birth_date" id="edit_birth_date" type="text" placeholder="JJ/MM/YYYY">
+                                </div>
+
+                                <div class="form_control">
+                                    <label class="label_form invalid" for="edit_hiring_date">Date d'embauche/début de l'activité*</label>
+                                    <input class="field_form" name="hiring_date" id="edit_hiring_date" type="text" placeholder="JJ/MM/YYYY">
+                                </div>
+
+                                <div class="form_control">
+                                    <label class="label_form invalid" for="edit_income">Total revenus mensuels (net en DH)*</label>
+                                    <input class="field_form" name="income" id="edit_income" step="1" type="number" placeholder="Total revenus mensuels (net en DH)">
+                                </div>
+
+                                <fieldset>
+                                    <legend class="pannel_heading">
+                                        <span> Avez vous des crédits en cours ?</span>
+                                    </legend>
+                                    <div class="fieldset_wrapper">
+                                        <div class="fieldset_control">
+                                            <label>
+                                                <input type="radio" name="has_credit" placeholder=" " value="MADAME"/>
+                                                <span class="custom_field"></span>
+                                                <span>Oui</span>
+                                            </label>
+                                        </div>
+                                        <div class="fieldset_control">
+                                            <label>
+                                                <input type="radio" checked name="has_credit" placeholder=" " value="MADAME"/>
+                                                <span class="custom_field"></span>
+                                                <span>Non</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <div class="form_control_checkbox">
+                                    <input type="checkbox" name="use_terms" value="1" autocomplete="off">
+                                    <span>J'ai lu et j'accepte les conditions générales d'utilisation figurant sur les informations légales, notamment la mention relative à la protection des données personnelles</span>
+                                </div>
+
                             </div>
                             <!-- Button -->
-                            <div class="submit__button" id="goToStep_2">
-                    <span class="btn btn_primary">
-                      Continuer
-                      <small>Sans engagement</small>
-                      <span class="form_old_submit">
-                        <input
-                                type="submit"
-                                class="btn"
-                                placeholder=" "
-                                value="Continuer (sans engagement)"
-                                autocomplete="off"
-                        />
-                      </span>
-                    </span>
+                            <div class="submit__button">
+                                <button class="btn btn_primary" type="button" id="nextBtn" style="display: block">
+                                    Continuer
+                                    <small>(Sans engagement)</small>
+                                </button>
+
                             </div>
-                            <input id="fees" type="hidden" name="fees" />
-                        </div>
-                        <!-- ========= Step 2 ========= -->
-                        <div id="step__2" style="display: none">
-                            <input
-                                    type="text"
-                                    name="email"
-                                    required
-                                    placeholder="email"
-                            />
-                            <input
-                                    type="text"
-                                    name="phone"
-                                    required
-                                    placeholder="phone"
-                            />
-                            <div class="submit__button" id="">
-                    <span class="btn btn_primary">
-                      Continuer
-                      <small>Sans engagement</small>
-                      <span class="form_old_submit">
-                        <input
-                                type="submit"
-                                class="btn"
-                                placeholder=" "
-                                value="Continuer (sans engagement)"
-                                autocomplete="off"
-                        />
-                      </span>
-                    </span>
-                            </div>
+
                         </div>
 
-                        <!-- ========= Step 3========= -->
-                        <div id="step__3" style="display: none">
-                            <input
-                                    type="text"
-                                    name="email"
-                                    required
-                                    placeholder="email"
-                            />
-                            <input
-                                    type="text"
-                                    name="phone"
-                                    required
-                                    placeholder="phone"
-                            />
-                            <div class="submit__button" id="goToStep_3">
-                    <span class="btn btn_primary">
-                      Continuer
-                      <small>Sans engagement</small>
-                      <span class="form_old_submit">
-                        <input
-                                type="submit"
-                                class="btn"
-                                placeholder=" "
-                                value="Continuer (sans engagement)"
-                                autocomplete="off"
-                        />
-                      </span>
-                    </span>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="box_shadow">
                         <div class="copyright_bloc">
@@ -295,5 +338,28 @@
         </div>
     </div>
 </div>
+
+<%--======== popup to show errors ======== --%>
+
+<div class="popup_wrapper hidden" id="popup">
+    <div class="overlay_popup"></div>
+    <div class="content_popup">
+        <div class="errors_container">
+            <ul class="alert_messages" id="errors">
+
+            </ul>
+
+        </div>
+        <div class="popup_footer">
+            <div class="close_popup_container">
+                <button class="close_popup btn_primary" type="button" id="close">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </body>
 </html>
