@@ -399,8 +399,8 @@ label {
 .custom_field::before {
   content: "";
   position: absolute;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height:6px;
   left: 50%;
   top: 50%;
   background-color: white;
@@ -504,6 +504,10 @@ input[type="radio"]:checked + .custom_field + span {
 }
 
 
-
-
+.btn.hidden {
+  display: none;
+}
+.btn.visible {
+  display: block;
+}
 /*# sourceMappingURL=globals.css.map */

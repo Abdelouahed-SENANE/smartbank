@@ -14,7 +14,7 @@
     </div>
     <div class="wrapper">
         <div class="row">
-            <form action="" id="form_data">
+            <form id="form_data" >
                 <div class="simulator">
                     <div class="steps__wrapper">
                         <div class="step active">
@@ -37,9 +37,9 @@
                             <%--  ==== phase 1 =====--%>
                             <div class="phase" style="display: block">
                                 <div class="select_group">
-                                    <label>Mon projet</label>
+                                    <label for="project">Mon projet</label>
                                     <select name="project" id="project">
-                                        <option value="PRET_PERSONNEL">
+                                        <option selected value="PRET_PERSONNEL">
                                             J’ai besoin d’argent
                                         </option>
                                         <option value="OCCASION">
@@ -51,7 +51,6 @@
                                         </option>
                                         <option value="CREDIT_MENAGE">J’équipe ma maison</option>
                                     </select>
-                                    <span class="selected-option"></span>
                                 </div>
                                 <div class="select_group">
                                     <label>Je suis</label>
@@ -70,11 +69,10 @@
                                         <option value="RETRAITE">Retraité</option>
                                         <option value="AUTRE">Autres professions</option>
                                     </select>
-                                    <span class="selected-option"></span>
                                 </div>
 
                                 <div class="simulator_amount">
-                                    <label for="">Montant (en DH)</label>
+                                    <label >Montant (en DH)</label>
                                     <div class="simulator_range">
                                         <input
                                                 id="amountText"
@@ -122,7 +120,7 @@
                                 </div>
 
                                 <div class="simulator_amount">
-                                    <label for="">Mensualités (en DH)</label>
+                                    <label>Mensualités (en DH)</label>
                                     <div class="simulator_range">
                                         <input
                                                 class="field_number monthly"
@@ -145,7 +143,7 @@
                                     </div>
                                 </div>
 
-                                <input id="fees" type="text" value="" name="fees"/>
+                                <input id="fees" type="hidden" value="" name="fees"/>
                             </div>
                             <%-- ====== Phase 2 ========--%>
                             <div class="phase" style="display: none">
@@ -184,7 +182,7 @@
                                         <div class="fieldset_control">
                                             <label>
                                                 <input type="radio" name="civility" placeholder=" " value="MONSIEUR"/>
-                                                <span class="custom_field"></span
+                                                <span class="custom_field"></span>
                                                 <span>Monsieur</span>
                                             </label>
 
@@ -208,17 +206,17 @@
                                 </div>
 
                                 <div class="form_control">
-                                    <label class="label_form invalid" for="edit_birth_date"> Date de naissance**</label>
-                                    <input class="field_form" name="birth_date" id="edit_birth_date" type="text" placeholder="JJ/MM/YYYY">
+                                    <label class="label_form" for="edit_birth_date"> Date de naissance*</label>
+                                    <input class="field_form date" name="birth_date" id="edit_birth_date" type="text" placeholder="JJ/MM/YYYY">
                                 </div>
 
                                 <div class="form_control">
-                                    <label class="label_form invalid" for="edit_hiring_date">Date d'embauche/début de l'activité*</label>
-                                    <input class="field_form" name="hiring_date" id="edit_hiring_date" type="text" placeholder="JJ/MM/YYYY">
+                                    <label class="label_form  " for="edit_hiring_date">Date d'embauche/début de l'activité*</label>
+                                    <input class="field_form date" name="hiring_date" id="edit_hiring_date" type="text" placeholder="JJ/MM/YYYY">
                                 </div>
 
                                 <div class="form_control">
-                                    <label class="label_form invalid" for="edit_income">Total revenus mensuels (net en DH)*</label>
+                                    <label class="label_form " for="edit_income">Total revenus mensuels (net en DH)*</label>
                                     <input class="field_form" name="income" id="edit_income" step="1" type="number" placeholder="Total revenus mensuels (net en DH)">
                                 </div>
 
@@ -252,11 +250,13 @@
                             </div>
                             <!-- Button -->
                             <div class="submit__button">
-                                <button class="btn btn_primary" type="button" id="nextBtn" style="display: block">
+                                <button class="btn btn_primary visible" type="button" id="nextBtn">
                                     Continuer
                                     <small>(Sans engagement)</small>
                                 </button>
-
+                                <button class="btn btn_primary hidden" type="submit" id="submitBtn">
+                                    Demander ce crédit
+                                </button>
                             </div>
 
                         </div>
@@ -285,53 +285,10 @@
             <div class="recap">
                 <div class="recap_wrapper">
                     <h2 class="recap-title">Mon récapitulatif</h2>
-                    <table class="recap_table">
-                        <thead>
-                        <tr>
-                            <td colspan="2">Mon projet</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <td class="text-primary">
-                            <strong> Prêt Personnel </strong>
-                        </td>
-                        </tbody>
+                    <table class="recap_table" id="table_info">
 
-                        <thead style="display: none">
-                        <tr>
-                            <td colspan="2">Détails de mon crédit</td>
-                        </tr>
-                        </thead>
-                        <tbody style="display: none">
-                        <tr>
-                            <td class="text_td">Vous êtes:</td>
-                            <td class="text_right">Fonctionnaire</td>
-                        </tr>
-                        <tr>
-                            <td class="text_td">Montant:</td>
-                            <td class="text_right">
-                                <span>10 000</span> <strong>DH</strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text_td">Durée:</td>
-                            <td class="text_right">
-                                <span>24</span>
 
-                                <strong>mois</strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text_td">Mensualité:</td>
-                            <td class="text_right">
-                                <span>469,40</span> <strong>DH</strong>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text_td">Frais de dossier:</td>
-                            <td class="text_right">271,50 <strong>DH</strong></td>
-                        </tr>
-                        </tbody>
+
                     </table>
                 </div>
             </div>

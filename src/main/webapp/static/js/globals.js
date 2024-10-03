@@ -1,6 +1,7 @@
 // Declaration des globals VAriable;
-import {JOB_CONFIG} from "./config.js";
+import {JOB_CONFIG, PROJECT_CONFIG} from "./config.js";
 import {calcMonthly, calcMonths} from "./caculator.js";
+import {post} from "./request.js";
 
 const selectedProject = document.getElementById("project")
 const selectedJob = document.getElementById("profession")
@@ -11,8 +12,12 @@ const monthsInput = document.getElementById("months_range")
 const monthsText = document.getElementById("monthsText")
 const monthlyInput = document.getElementById("monthlyRange")
 const monthlyText = document.getElementById("monthlyNumber")
-const selectedOption = document.getElementsByClassName("selected-option")
 const fees = document.getElementById("fees")
+const email = document.getElementById("email")
+const phone = document.getElementById("phone")
+
+
+
 amountText.value = amountInput.value;
 monthsText.value = monthsInput.value;
 monthlyText.value = monthlyInput.value;
@@ -25,8 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
         monthsInput.setAttribute("min", maxValues.monthsMin);
     }
     updateMonthly()
-    selectedOption[0].innerText = selectedProject.options[selectedProject.selectedIndex].innerText;
-    selectedOption[1].innerText = selectedJob.options[selectedJob.selectedIndex].innerText;
     calcFees();
 })
 
@@ -39,23 +42,17 @@ selectedJob.addEventListener("change", () => {
     }
     amountText.value = amountInput.value;
     monthsText.value = monthsInput.value;
-    selectedOption[1].innerText = selectedJob.options[selectedJob.selectedIndex].innerText;
-
-})
-selectedProject.addEventListener("change", () => {
-    selectedOption[0].innerText = selectedProject.options[selectedProject.selectedIndex].innerText;
 
 })
 
 amountInput.addEventListener("input", () => {
     amountText.value = amountInput.value;
     updateMonthly();
-    // Cacul Fees
     calcFees();
 })
 
 function calcFees() {
-    const feesVal = amountInput.value * 0.022;
+    const feesVal = (amountInput.value * 0.022).toFixed(2);
     if (feesVal <= 165) {
         fees.setAttribute("value", 165)
         fees.value = 165
@@ -98,8 +95,9 @@ function updateMonthly() {
 const phases = document.querySelectorAll(".phase")
 const steps = document.querySelectorAll(".step")
 const button = document.getElementById("nextBtn")
+const submit = document.getElementById("submitBtn")
 
-let currentPhase = 2;
+let currentPhase = 0;
 
 function next() {
     if (currentPhase >= phases.length - 1) {
@@ -110,25 +108,38 @@ function next() {
     }
     currentPhase++;
     showPhase(currentPhase);
+    displayInfo(currentPhase)
+
     if (currentPhase === phases.length - 1) {
-        button.setAttribute("type", "submit");
-        button.innerText = "Demande ce credit"
+        button.classList.replace("visible", "hidden");
+        submit.classList.replace("hidden", "visible")
     }
+
 }
 
 button.addEventListener("click", (e) => {
-    if (currentPhase < phases.length - 1 || !validateForm()) {
-        e.preventDefault();
+    if (validateForm()) {
+        next();
     }
-    next();
 });
+submit.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (!validateForm()) {
+        return
+    }
+
+    const form = document.getElementById("form_data")
+    const payload = new FormData(form);
+    post("http://localhost:8080/simulateur" , "post" , payload)
+});
+
 steps.forEach((step, index) => {
     step.addEventListener("click", () => {
         if (index <= currentPhase) {
             currentPhase = index;
-            button.setAttribute("type", "button");
-            button.innerHTML = "Continuer\n" +
-                "<small>(Sans engagement)</small>"
+            submit.classList.replace("visible", "hidden");
+            button.classList.replace("hidden", "visible")
+            displayInfo(currentPhase)
             showPhase(index)
         }
     })
@@ -156,19 +167,19 @@ function validateForm() {
     inputs = phases[currentPhase].getElementsByTagName("input");
 
     const fieldMapping = {
-        phone : "Téléphone mobile est obligatoire",
-        email : "Adresse email  est obligatoire.",
-        last_name : "Nom est obligatoire",
-        first_name : "Prénom est obligatoire",
-        cin : "Numéro CIN / Carte de séjour est obligatoire",
-        birth_date : "Date de naissance est obligatoire",
-        hiring_date : "Date d'embauche/début de l'activité est obligatoire",
-        income : "Total revenus mensuels (net en DH) est obligatoire",
+        phone: "Téléphone mobile est obligatoire",
+        email: "Adresse email  est obligatoire.",
+        last_name: "Nom est obligatoire",
+        first_name: "Prénom est obligatoire",
+        cin: "Numéro CIN / Carte de séjour est obligatoire",
+        birth_date: "Date de naissance est obligatoire",
+        hiring_date: "Date d'embauche/début de l'activité est obligatoire",
+        income: "Total revenus mensuels (net en DH) est obligatoire",
     }
     for (let i = 0; i < inputs.length; i++) {
         if (inputs[i].value === "") {
             inputs[i].classList.add("invalid")
-            const message = fieldMapping[inputs[i].name ] || inputs[i].name
+            const message = fieldMapping[inputs[i].name] || inputs[i].name
             errors.push(message)
             valid = false;
 
@@ -201,7 +212,7 @@ function validateForm() {
             }
             if (inputs[i].name === "last_name" || inputs[i].name === "first_name") {
                 const REGEX_NAME = /^[a-zA-ZÀ-ÿ\s'-]+$/; //
-                 if (!inputs[i].value.match(REGEX_NAME)) {
+                if (!inputs[i].value.match(REGEX_NAME)) {
                     inputs[i].classList.add("invalid");
                     const message = inputs[i].name === "last_name" ? "Le champ Nom ne doit contenir que des lettres" : "Le champ Prénom ne doit contenir que des lettres"
                     errors.push(message)
@@ -211,29 +222,35 @@ function validateForm() {
                 }
             }
             if (inputs[i].name === "cin") {
-                const CIN_REGEX = /^[A-Z]{1}\d{14}$/;
-                if (!inputs[i].name.match(CIN_REGEX)) {
+                const CIN_REGEX = /^([A-Z]{1,2}\d{1,}|[a-z]{1,2}\d{1,})$/;
+                if (!inputs[i].value.match(CIN_REGEX)) {
+                    inputs[i].classList.add("invalid");
                     errors.push("CIN invalide. Veuillez entrer un CIN valide.")
                     valid = false;
+                } else {
+                    inputs[i].classList.remove("invalid");
                 }
             }
             if (inputs[i].name === "birth_date" || inputs[i].name === "hiring_date") {
                 const DATE_REGEX = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-                if (!inputs[i].name.match(DATE_REGEX)) {
+                if (!inputs[i].value.match(DATE_REGEX)) {
+                    inputs[i].classList.add("invalid");
                     const message = inputs[i].name === "birth_date" ? "Veuillez saisir une date de naissance valide" : "Veuillez saisir une date d'embauche valide"
                     errors.push(message)
                     valid = false;
+                } else {
+                    inputs[i].classList.remove("invalid");
                 }
             }
         }
 
 
     }
-    const displayErrors =document.getElementById("errors")
+    const displayErrors = document.getElementById("errors")
 
-    if(!valid) {
+    if (!valid) {
 
-        popup.classList.replace("hidden" , "visible")
+        popup.classList.replace("hidden", "visible")
         displayErrors.innerHTML = "";
         errors.forEach(error => {
             displayErrors.innerHTML += `
@@ -245,4 +262,177 @@ function validateForm() {
 }
 
 const closePopup = document.getElementById("close")
-closePopup.addEventListener("click" , () =>popup.classList.replace("visible" , "hidden"))
+closePopup.addEventListener("click", () => popup.classList.replace("visible", "hidden"))
+
+// ---- Format input Date  ---------
+document.querySelectorAll(".date").forEach(inputDate => {
+    inputDate.addEventListener("input", (e) => {
+        let value = e.target.value;
+        value = value.replace(/[^0-9]/g, '');
+        if (value.length > 2 && value[2] !== "/") {
+            value = value.slice(0, 2) + "/" + value.slice(2)
+        }
+        if (value.length > 5 && value[5] !== "/") {
+            value = value.slice(0, 5) + "/" + value.slice(5)
+        }
+
+        e.target.value = value.slice(0, 10);
+    })
+})
+
+selectedProject.addEventListener("change", () => {
+    const project = document.getElementById("current_project")
+    project.innerText = PROJECT_CONFIG[selectedProject.value];
+
+})
+
+
+function displayInfo(index) {
+    const table = document.getElementById("table_info")
+    table.innerHTML = "";
+    switch (index) {
+        case 0 :
+            table.innerHTML += `
+            
+                <thead>
+                <tr>
+                    <td colspan="2">Mon projet</td>
+                </tr>
+                </thead>
+                <tbody>
+                <td class="text-primary">
+                    <strong id="current_project">${PROJECT_CONFIG[selectedProject.value]}</strong>
+                </td>
+                </tbody>
+            `
+            break
+        case 1 :
+             table.innerHTML += `
+                <thead>
+                <tr>
+                    <td colspan="2">Mon projet</td>
+                </tr>
+                </thead>
+                <tbody>
+                <td class="text-primary">
+                    <strong id="current_project">${PROJECT_CONFIG[selectedProject.value]}</strong>
+                </td>
+                </tbody>
+                        <thead>
+                        <tr>
+                            <td colspan="2">Détails de mon crédit</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_info">
+                        <tr>
+                            <td class="text_td">Vous êtes:</td>
+                            <td class="text_right text-primary result">
+                                <span class="result">${selectedJob.selectedOptions[0].textContent}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text_td">Montant:</td>
+                            <td class="text_right text-primary result">
+                                <span class="result">${amountText.value}</span> <strong>DH</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text_td">Durée:</td>
+                            <td class="text_right text-primary result">
+                                <span  class="result">${monthsText.value}</span>
+                                <strong>mois</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text_td">Mensualité:</td>
+                            <td class="text_right text-primary ">
+                                <span class="result">${monthlyText.value}</span> <strong>DH</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text_td">Frais de dossier:</td>
+                            <td class="text_right text-primary result"><span>${fees.value}</span> <strong>DH</strong></td>
+                        </tr>
+                        </tbody>
+             `
+            break
+        case 2 :
+            table.innerHTML += `
+                        <thead>
+                        <tr>
+                            <td colspan="2">Mon projet</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <td class="text-primary">
+                            <strong id="current_project">${PROJECT_CONFIG[selectedProject.value]}</strong>
+                        </td>
+                        </tbody>
+                        <thead>
+                
+                        <tr>
+                            <td colspan="2">Coordonnées et infos personnelles</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_info">
+                        <tr>
+                            <td class="text_td">Adresse email: </td>
+                            <td class="text_right text-primary result">
+                                <span class="result">${email.value}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text_td">Téléphone:</td>
+                            <td class="text_right text-primary result">
+                                <span class="result">${phone.value}</span>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                        
+                        
+                        <thead>
+                        <tr>
+                            <td colspan="2">Détails de mon crédit</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_info">
+                        <tr>
+                            <td class="text_td">Vous êtes:</td>
+                            <td class="text_right text-primary result">
+                                <span class="result">${selectedJob.selectedOptions[0].textContent}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text_td">Montant:</td>
+                            <td class="text_right text-primary result">
+                                <span class="result">${amountText.value}</span> <strong>DH</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text_td">Durée:</td>
+                            <td class="text_right text-primary result">
+                                <span  class="result">${monthsText.value}</span>
+                                <strong>mois</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text_td">Mensualité:</td>
+                            <td class="text_right text-primary ">
+                                <span class="result">${monthlyText.value}</span> <strong>DH</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text_td">Frais de dossier:</td>
+                            <td class="text_right text-primary result"><span>${(fees.value)}</span> <strong>DH</strong></td>
+                        </tr>
+                        </tbody>
+             `
+            break
+    }
+
+
+}
+
+displayInfo(currentPhase)
+

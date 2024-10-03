@@ -7,3 +7,11 @@ export const  JOB_CONFIG =  {
     RETRAITE: { amountMax: 250000, monthsMax: 60, monthsMin: 6 },
     AUTRE: { amountMax: 200000, monthsMax: 84, monthsMin: 6 },
 }
+export const  PROJECT_CONFIG =  {
+    PRET_PERSONNEL:"Prêt Personnel ",
+    OCCASION: " Auto Occasion ",
+    REV:"Tournant",
+    CREDIT_AUTOMOBILE: " Auto neuf ",
+    CREDIT_MENAGE: " Equipement des ménages ",
+
+}
