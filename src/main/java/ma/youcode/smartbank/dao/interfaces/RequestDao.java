@@ -1,5 +1,9 @@
-package ma.youcode.smartbank.dao;
+package ma.youcode.smartbank.dao.interfaces;
 
-public interface RequestDao  {
+import ma.youcode.smartbank.entities.Request;
+
+import java.util.UUID;
+
+public interface RequestDao extends GenericDao<Request , UUID> {
 
 }

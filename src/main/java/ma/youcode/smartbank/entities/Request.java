@@ -1,49 +1,59 @@
 package ma.youcode.smartbank.entities;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Entity
-//@Table(name = "requests")
+
 public class Request {
     @Id
-    @NotBlank
+    @GeneratedValue(generator = "UUID")
+    private UUID requestId;
+
+
     private String project;
-    @NotBlank
     private String job;
-    @Positive
-    @NotBlank
+
+
     private double amount;
-    @Positive
-    @NotBlank
+
+
     private int duration;
-    @Positive
-    @NotBlank
+
+
     private double monthly;
-    @NotBlank
-    @Email
+
+
+
     private String email;
-    @Pattern(regexp = "^(\\\\+\\\\d{1,3}[- ]?)?\\\\d{10}$" , message = "Entre Valide Telephone nombre")
+
     private String phone;
-    @NotBlank
+
     private String lastname;
-    @NotBlank
+
     private String firstname;
-    @NotBlank
+
     private String cin;
-    @Past
+
     private LocalDate birthday;
-    @Past
+
     private LocalDate dateOfHire;
-    @Positive
+
     private double income;
     private  RequestStatus status;
 
     public Request() {}
+
+    public UUID getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(UUID requestId) {
+        this.requestId = requestId;
+    }
 
     public RequestStatus getStatus() {
         return status;

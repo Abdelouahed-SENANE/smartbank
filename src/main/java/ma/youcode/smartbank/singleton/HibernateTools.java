@@ -1,13 +1,16 @@
 package ma.youcode.smartbank.singleton;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
+
 public class HibernateTools {
     private static  HibernateTools instance;
-    private final SessionFactory sessionFactory;
+    private final EntityManagerFactory entityManagerFactory;
 
     private  HibernateTools() {
-        sessionFactory = new Configuration().configure().buildSessionFactory();
+        entityManagerFactory = Persistence.createEntityManagerFactory("default");
     }
 
     public static synchronized HibernateTools getInstance() {
@@ -17,11 +20,12 @@ public class HibernateTools {
         return instance;
     }
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
+    public EntityManager getEntityManager() {
+        return entityManagerFactory.createEntityManager();
     }
 
-    public void shutdown() {
-        getSessionFactory().close();
+    public void close() {
+        entityManagerFactory.close();
     }
+
 }
