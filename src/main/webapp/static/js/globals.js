@@ -130,7 +130,7 @@ submit.addEventListener("click", (e) => {
 
     const form = document.getElementById("form_data")
     const payload = new FormData(form);
-    post("http://localhost:8080/simulateur" , "post" , payload)
+    post("http://localhost:8080/demandes/save" , "post" , payload)
 });
 
 steps.forEach((step, index) => {

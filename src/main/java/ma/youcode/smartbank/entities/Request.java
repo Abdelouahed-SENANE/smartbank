@@ -2,30 +2,63 @@ package ma.youcode.smartbank.entities;
 
 import java.time.LocalDate;
 
-public class Request {
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.*;
 
-    private String nameProject;
+@Entity
+//@Table(name = "requests")
+public class Request {
+    @Id
+    @NotBlank
+    private String project;
+    @NotBlank
     private String job;
+    @Positive
+    @NotBlank
     private double amount;
+    @Positive
+    @NotBlank
     private int duration;
+    @Positive
+    @NotBlank
     private double monthly;
+    @NotBlank
+    @Email
     private String email;
+    @Pattern(regexp = "^(\\\\+\\\\d{1,3}[- ]?)?\\\\d{10}$" , message = "Entre Valide Telephone nombre")
     private String phone;
+    @NotBlank
     private String lastname;
+    @NotBlank
     private String firstname;
+    @NotBlank
     private String cin;
+    @Past
     private LocalDate birthday;
+    @Past
     private LocalDate dateOfHire;
-    private double totalMonthlyIncome;
+    @Positive
+    private double income;
+    private  RequestStatus status;
 
     public Request() {}
 
-    public String getNameProject() {
-        return nameProject;
+    public RequestStatus getStatus() {
+        return status;
     }
 
-    public void setNameProject(String nameProject) {
-        this.nameProject = nameProject;
+    public void setStatus(RequestStatus status) {
+        this.status = status;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String nameProject) {
+        this.project = nameProject;
     }
 
     public String getJob() {
@@ -116,11 +149,18 @@ public class Request {
         this.dateOfHire = dateOfHire;
     }
 
-    public double getTotalMonthlyIncome() {
-        return totalMonthlyIncome;
+    public double getIncome() {
+        return income;
     }
 
-    public void setTotalMonthlyIncome(double totalMonthlyIncome) {
-        this.totalMonthlyIncome = totalMonthlyIncome;
+    public void setIncome(double totalMonthlyIncome) {
+        this.income = totalMonthlyIncome;
+    }
+
+    public enum RequestStatus {
+        EN_ATTENTE,
+        APPROUVÉ,
+        REJETÉ,
+        TERMINÉ
     }
 }

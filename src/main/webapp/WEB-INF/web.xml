@@ -4,4 +4,13 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
 
+    <servlet>
+        <servlet-name>RequestServlet</servlet-name>
+        <servlet-class>ma.youcode.smartbank.controllers.RequestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RequestServlet</servlet-name>
+        <url-pattern>/demandes/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>

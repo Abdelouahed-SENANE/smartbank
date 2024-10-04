@@ -5,7 +5,7 @@
     <title>Demander mon crédit en ligne</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/globals.css">
     <script type="module" defer src="${pageContext.request.contextPath}/static/js/globals.js"></script>
-    <link rel="icon" href="../../static/img/favicon-16x16.png"/>
+    <link rel="icon" href="../static/img/favicon-16x16.png"/>
 </head>
 <body>
 <div class="app">
