@@ -1,51 +1,76 @@
 package ma.youcode.smartbank.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-@Entity
 
+@Entity
+@Table(name = "requests")
 public class Request {
     @Id
     @GeneratedValue(generator = "UUID")
     private UUID requestId;
 
+    @NotBlank(message = "Project name cannot be blank")
+    @Size(min = 3, max = 100, message = "Project name must be between 3 and 100 characters")
+    private String projectName;
 
-    private String project;
-    private String job;
+    @NotBlank(message = "Job name cannot be blank")
+    @Size(min = 3, max = 100, message = "Job name must be between 3 and 100 characters")
+    private String jobName;
 
-
+    @Positive(message = "Amount must be positive")
     private double amount;
 
+    @NotBlank(message = "Civility is required")
+    private String civility;
 
+    @Min(value = 1, message = "Duration must be at least 1 month")
     private int duration;
 
-
+    @Positive(message = "Monthly amount must be positive")
     private double monthly;
 
-
-
+    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email is required")
     private String email;
 
+    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Phone number should be valid")
+    @NotBlank(message = "Phone is required")
     private String phone;
 
+    @NotBlank(message = "Lastname cannot be blank")
     private String lastname;
 
+    @NotBlank(message = "Firstname cannot be blank")
     private String firstname;
 
+    @NotBlank(message = "CIN is required")
+    @Size(min = 5, max = 20, message = "CIN must be between 5 and 20 characters")
     private String cin;
 
+    @Past(message = "Birthday must be a past date")
     private LocalDate birthday;
 
+    @PastOrPresent(message = "Date of hire must be in the past or present")
     private LocalDate dateOfHire;
 
+    @Positive(message = "Income must be positive")
     private double income;
-    private  RequestStatus status;
+
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RequestStatusHistory> statusHistories = new ArrayList<>();
+
+    private double fees;
+
 
     public Request() {}
+
 
     public UUID getRequestId() {
         return requestId;
@@ -55,28 +80,20 @@ public class Request {
         this.requestId = requestId;
     }
 
-    public RequestStatus getStatus() {
-        return status;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setStatus(RequestStatus status) {
-        this.status = status;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
-    public String getProject() {
-        return project;
+    public String getJobName() {
+        return jobName;
     }
 
-    public void setProject(String nameProject) {
-        this.project = nameProject;
-    }
-
-    public String getJob() {
-        return job;
-    }
-
-    public void setJob(String job) {
-        this.job = job;
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
     }
 
     public double getAmount() {
@@ -85,6 +102,14 @@ public class Request {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public String getCivility() {
+        return civility;
+    }
+
+    public void setCivility(String civility) {
+        this.civility = civility;
     }
 
     public int getDuration() {
@@ -163,14 +188,24 @@ public class Request {
         return income;
     }
 
-    public void setIncome(double totalMonthlyIncome) {
-        this.income = totalMonthlyIncome;
+    public void setIncome(double income) {
+        this.income = income;
     }
 
-    public enum RequestStatus {
-        EN_ATTENTE,
-        APPROUVÉ,
-        REJETÉ,
-        TERMINÉ
+    public double getFees() {
+        return fees;
+    }
+
+    public void setFees(double fees) {
+        this.fees = fees;
+    }
+
+    public List<RequestStatusHistory> getStatusHistories() {
+        return statusHistories;
+    }
+
+    public void addStatus(Status status) {
+       RequestStatusHistory history = new RequestStatusHistory(this , status);
+       statusHistories.add(history);
     }
 }

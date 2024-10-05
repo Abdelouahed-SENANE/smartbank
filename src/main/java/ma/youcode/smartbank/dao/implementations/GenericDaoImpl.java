@@ -33,7 +33,7 @@ public abstract class GenericDaoImpl<T , ID> implements GenericDao<T , ID> {
             }
             e.printStackTrace();
         }finally {
-            HibernateTools.getInstance().close();
+            entityManager.close();
         }
     }
 
@@ -51,5 +51,6 @@ public abstract class GenericDaoImpl<T , ID> implements GenericDao<T , ID> {
     public Optional<T> findById(ID id) {
         return Optional.empty();
     }
+
 
 }
