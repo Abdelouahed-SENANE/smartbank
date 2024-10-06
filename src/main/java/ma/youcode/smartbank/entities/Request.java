@@ -64,7 +64,7 @@ public class Request {
     private double income;
 
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RequestStatusHistory> statusHistories = new ArrayList<>();
+    private List<History> statusHistories = new ArrayList<>();
 
     private double fees;
 
@@ -200,12 +200,12 @@ public class Request {
         this.fees = fees;
     }
 
-    public List<RequestStatusHistory> getStatusHistories() {
+    public List<History> getStatusHistories() {
         return statusHistories;
     }
 
     public void addStatus(Status status) {
-       RequestStatusHistory history = new RequestStatusHistory(this , status);
+       History history = new History(this , status);
        statusHistories.add(history);
     }
 }

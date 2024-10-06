@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "request_status_history")
-public class RequestStatusHistory {
+@Table(name = "histories")
+public class History {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -25,8 +25,8 @@ public class RequestStatusHistory {
     @UpdateTimestamp
     private LocalDateTime changedAt;
 
-    public RequestStatusHistory(){}
-    public RequestStatusHistory(Request request , Status status){
+    public History(){}
+    public History(Request request , Status status){
         this.request = request;
         this.status = status;
     }

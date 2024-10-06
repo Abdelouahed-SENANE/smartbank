@@ -6,7 +6,6 @@ import org.hibernate.annotations.Immutable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "statuses")
@@ -18,7 +17,7 @@ public class Status {
     private String statusName;
 
     @OneToMany(mappedBy = "status", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RequestStatusHistory> statusHistories = new ArrayList<>();
+    private List<History> statusHistories = new ArrayList<>();
 
     public Status(){}
 
@@ -30,11 +29,11 @@ public class Status {
         this.statusName = statusName;
     }
 
-    public List<RequestStatusHistory> getStatusHistories() {
+    public List<History> getStatusHistories() {
         return statusHistories;
     }
 
-    public void addHistories(RequestStatusHistory history) {
+    public void addHistories(History history) {
         statusHistories.add(history);
     }
 }

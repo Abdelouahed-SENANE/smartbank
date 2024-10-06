@@ -31,3 +31,5 @@ create table request_status_history(
                                        foreign key (status_id) references statuses(status_id) ON delete cascade on update cascade
 );
 
+INSERT INTO statuses (statusname)
+values ('EN ATTENTE') , ('APPROUVÉ') , ('REJETÉ'),('TERMINÉ')

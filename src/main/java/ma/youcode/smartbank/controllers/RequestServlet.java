@@ -1,7 +1,5 @@
 package ma.youcode.smartbank.controllers;
 
-import jakarta.persistence.EntityManager;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,37 +7,35 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ma.youcode.smartbank.dao.implementations.RequestDaoImpl;
-import ma.youcode.smartbank.dao.implementations.RequestStatusHistoryHistoryDaoImp;
+import ma.youcode.smartbank.dao.implementations.HistoryDaoImpl;
 import ma.youcode.smartbank.dao.implementations.StatusDaoImpl;
 import ma.youcode.smartbank.entities.Request;
-import ma.youcode.smartbank.entities.RequestStatusHistory;
+import ma.youcode.smartbank.entities.History;
 import ma.youcode.smartbank.entities.Status;
-import ma.youcode.smartbank.enums.RequestStatus;
+import ma.youcode.smartbank.responses.Response;
 import ma.youcode.smartbank.services.implementations.RequestServiceImpl;
-import ma.youcode.smartbank.services.implementations.RequestStatusHistoryServiceImpl;
+import ma.youcode.smartbank.services.implementations.HistoryServiceImpl;
 import ma.youcode.smartbank.services.implementations.StatusServiceImpl;
 import ma.youcode.smartbank.services.interfaces.RequestService;
-import ma.youcode.smartbank.services.interfaces.RequestStatusHistoryService;
+import ma.youcode.smartbank.services.interfaces.HistoryService;
 import ma.youcode.smartbank.services.interfaces.StatusService;
-import ma.youcode.smartbank.singleton.HibernateTools;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @WebServlet
 @MultipartConfig
 public class RequestServlet extends HttpServlet {
     private RequestService requestService;
     private StatusService statusService;
-    private RequestStatusHistoryService historyService;
+    private HistoryService historyService;
     public void init() {
         requestService = new RequestServiceImpl(new RequestDaoImpl());
         statusService = new StatusServiceImpl(new StatusDaoImpl());
-        historyService = new RequestStatusHistoryServiceImpl(new RequestStatusHistoryHistoryDaoImp());
+        historyService = new HistoryServiceImpl(new HistoryDaoImpl());
     }
 
     @Override
@@ -79,7 +75,8 @@ public class RequestServlet extends HttpServlet {
 
 
     private void save(HttpServletRequest req , HttpServletResponse res) throws IOException , ServletException {
-        res.setContentType("text/plain");
+        res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8");
 
         String email = req.getParameter("email");
         String project = req.getParameter("project");
@@ -116,20 +113,20 @@ public class RequestServlet extends HttpServlet {
         request.setProjectName(project);
 
         try {
-            requestService.save(request);
-            request.setRequestId(request.getRequestId());
             Optional<Status> optionalStatus = statusService.getStatusByName("EN ATTENTE");
             if (optionalStatus.isPresent()) {
-                RequestStatusHistory history = new RequestStatusHistory(request , optionalStatus.get());
+                requestService.save(request);
+                History history = new History(request , optionalStatus.get());
                 historyService.save(history);
             }
-
-            res.getWriter().write("Data added successfully" );
+            Response response = new Response("Votre demande a été ajoutée avec succès." , 200);
+            res.getWriter().write(response.responseJson());
         } catch (Exception e) {
-            res.getWriter().write("Error saving request: " + e.getMessage());
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            Response response = new Response("Votre demande n'a pas été ajoutée avec succès." , 401);
+            res.getWriter().write(response.responseJson());
+            res.getWriter().write("Error saving requests: " + e.getMessage());
         }
-
-
 
     }
 
@@ -137,6 +134,9 @@ public class RequestServlet extends HttpServlet {
         req.getRequestDispatcher("/views/create-request.jsp").include(req , res);
     }
     private void list(HttpServletRequest req , HttpServletResponse res) throws IOException,ServletException {
+         List<Optional<Request>> optionalsRequests = requestService.getAllRequestsAndStatuses();
+         List<Request> requests = optionalsRequests.stream().filter(Optional::isPresent).map(Optional::get).toList();
+        req.setAttribute("requests" , requests);
         req.getRequestDispatcher("/views/request-list.jsp").include(req , res);
     }
 

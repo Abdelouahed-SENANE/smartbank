@@ -2,12 +2,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>Smartbank</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/globals.css">
+    <link rel="icon" href="../static/img/favicon-16x16.png"/>
 </head>
 <body>
-<h1><%= "Hello World!" %>
-</h1>
-<br/>
-<a href="hello-servlet">Hello Servlet</a>
+<div class="landing">
+    <button class="link">
+        <a href="http://localhost:8080/demandes/liste">Admin</a>
+    </button>
+    <button class="link">
+        <a href="http://localhost:8080/demandes/creer"> Simulateur de Crédit</a>
+    </button>
+</div>
 </body>
 </html>
