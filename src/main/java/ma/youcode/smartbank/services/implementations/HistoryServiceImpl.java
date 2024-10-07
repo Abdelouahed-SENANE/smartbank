@@ -1,6 +1,6 @@
 package ma.youcode.smartbank.services.implementations;
 
-import ma.youcode.smartbank.dao.interfaces.HistoryDao;
+import ma.youcode.smartbank.daos.interfaces.HistoryDao;
 import ma.youcode.smartbank.entities.History;
 import ma.youcode.smartbank.services.interfaces.HistoryService;
 

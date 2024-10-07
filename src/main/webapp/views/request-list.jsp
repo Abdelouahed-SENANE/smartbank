@@ -11,7 +11,7 @@
 <head>
     <title>Voir tous les demande </title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/globals.css">
-<%--    <script type="module" defer src="${pageContext.request.contextPath}/static/js/simulator.js"></script>--%>
+    <script type="module" defer src="${pageContext.request.contextPath}/static/js/list-requests.js"></script>
     <link rel="icon" href="../static/img/favicon-16x16.png"/>
 </head>
 <body>
@@ -20,19 +20,20 @@
         <div class="_header">
             <h2>Tableau des Demandes</h2>
             <div class="wrapper_inputs">
-               <div>
+               <label for="search-input"  class="custom_txt">
                    <input type="text" name="query" id="search-input" placeholder="Search...">
-               </div>
-                <div>
-                    <input type="date" name="date" id="input-date">
-                </div>
+               </label>
+                <label for="date-input" class="custom-date">
+                    <input type="date" id="date-input" placeholder="Enter date">
+                </label>
+
             </div>
         </div>
         <div class="table_item">
             <table>
                 <thead>
                 <tr>
-                    <th class="column_1">ID</th>
+                    <th class="column_1">Demande ID</th>
                     <th class="column_2">Prenom</th>
                     <th class="column_3">Nom</th>
                     <th class="column_4">Cin</th>
@@ -47,7 +48,8 @@
                     <th class="column_13">Phone</th>
                     <th class="column_14">Nom de projet</th>
                     <th class="column_15">Civilite</th>
-                    <th class="column_16">Historique status</th>
+                    <th class="column_16">Etat</th>
+                    <th class="column_17">Actions</th>
 
                 </tr>
                 </thead>
@@ -70,7 +72,54 @@
                         <td class="column_13">${request.phone}</td>
                         <td class="column_14">${request.projectName}</td>
                         <td class="column_15">${request.civility}</td>
-                        <td class="column_16">Etat</td>
+                        <td class="column_16">${(request.statusHistories[0].status.statusName).toLowerCase()}</td>
+
+                        <td class="column_17">
+                            <div class="actions_wrapper">
+                                <button  class="action_btn view" type="button"  >
+                                    View
+                                </button>
+                                <button class="action_btn update"  type="button" id="update">Edit</button>
+                                <button class="action_btn delete"  type="button" id="delete">
+                                    Supp
+                                </button>
+                            </div>
+                            <div class="histories_table histories" id="histories">
+                                <div class="overlay_table" ></div>
+                                <div class="sub_table">
+
+                                    <div class="sub_table_container">
+                                        <div class="_header">
+                                            <h2>Tableau des Historiques de ${request.projectName}</h2>
+                                            <div class="wrapper_inputs">
+                                            </div>
+                                        </div>
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th class="column_1">Historique ID</th>
+                                                <th class="column_2">Etat</th>
+                                                <th class="column_1">Modifié le</th>
+                                                <th class="column_14">Nom de projet</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach var="history" items="${request.statusHistories}">
+                                                <tr>
+                                                    <td class="column_1">${history.historyId}</td>
+                                                    <td class="column_2">${history.status.statusName}</td>
+                                                    <td class="column_3">${history.changedAt}</td>
+                                                    <td class="column_14">${history.request.projectName}</td>
+                                                </tr>
+                                            </c:forEach>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </td>
 
                     </tr>
                 </c:forEach>

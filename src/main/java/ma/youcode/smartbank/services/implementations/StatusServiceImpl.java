@@ -1,6 +1,6 @@
 package ma.youcode.smartbank.services.implementations;
 
-import ma.youcode.smartbank.dao.interfaces.StatusDao;
+import ma.youcode.smartbank.daos.interfaces.StatusDao;
 import ma.youcode.smartbank.entities.Status;
 import ma.youcode.smartbank.services.interfaces.StatusService;
 

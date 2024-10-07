@@ -1,9 +1,9 @@
-package ma.youcode.smartbank.dao.implementations;
+package ma.youcode.smartbank.daos.implementations;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
-import ma.youcode.smartbank.dao.interfaces.StatusDao;
+import ma.youcode.smartbank.daos.interfaces.StatusDao;
 import ma.youcode.smartbank.entities.Status;
 import ma.youcode.smartbank.singleton.HibernateTools;
 

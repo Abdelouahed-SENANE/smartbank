@@ -802,9 +802,12 @@ body .table_container {
 .column_16 {
     min-width: 90px;
 }
-table * {
-  position: relative;
+
+.column_17{
+    min-width: 210px;
+    text-align: center !important;
 }
+
 table td, table th {
   padding-left: 8px;
 }
@@ -833,7 +836,119 @@ tbody tr:nth-child(2n) {
 tbody tr:hover {
   color: #555555;
   background-color: #f5f5f5;
-  cursor: pointer;
   transition: all 0.1s ease-in;
+}
+.action_btn {
+    padding:6px 8px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.action_btn.update {
+    background-color: #FFBC49;
+}
+.action_btn.view {
+    background-color: #58AD69;
+}
+.action_btn.delete {
+    background-color: #E2574C;
+}
+.histories_table {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0.2s ease-out , opacity 0.3s ease-out;
+}
+.histories_table.visible {
+    opacity: 1;
+    visibility: visible;
+    transition: visibility 0.2s ease-out , opacity 0.3s ease-out;
+}
+.histories_table .overlay_table{
+    background-color: rgba(0 , 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+}
+.histories_table .sub_table {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    transform: translateY(-60px);
+    top: 20%;
+    z-index: 20;
+    transition: all 0.2s ease-out;
+
+}
+.histories_table .sub_table .sub_table_container {
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 6px;
+}
+.histories_table.visible .sub_table {
+    transform: translateY(0px);
+    transition: all 0.2s ease-out;
+
+}
+
+.custom-date input[type="text"]:focus {
+    border: 1px solid #f78f42;
+    box-shadow: 0 0 5px rgba(247, 143, 66, 0.5);
+}
+
+.date-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 18px;
+    color: #f78f42;
+}
+
+
+
+.custom-date input[type="date"] {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: #979797;
+    transition: all 0.1s linear;
+
+}
+.custom-date input[type="date"]:focus {
+    color: black;
+    outline: none;
+    border: 1px solid #FFBC49;
+    box-shadow: 0 0 2px 2px #FFBC49;
+}
+.custom_txt input[type="text"] {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: #979797;
+    transition: all 0.1s linear;
+}
+.custom_txt input[type="text"]:focus {
+    color: black;
+    outline: none;
+    border: 1px solid #FFBC49;
+    box-shadow: 0 0 2px 2px #FFBC49;
 }
 /*# sourceMappingURL=globals.css.map */

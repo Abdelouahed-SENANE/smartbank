@@ -1,4 +1,4 @@
-package ma.youcode.smartbank.dao.interfaces;
+package ma.youcode.smartbank.daos.interfaces;
 
 import ma.youcode.smartbank.entities.Request;
 

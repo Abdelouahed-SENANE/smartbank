@@ -1,4 +1,4 @@
-package ma.youcode.smartbank.dao.interfaces;
+package ma.youcode.smartbank.daos.interfaces;
 
 
 import java.util.List;

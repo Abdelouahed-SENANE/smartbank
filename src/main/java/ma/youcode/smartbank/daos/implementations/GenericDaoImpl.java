@@ -1,10 +1,8 @@
-package ma.youcode.smartbank.dao.implementations;
+package ma.youcode.smartbank.daos.implementations;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
-import ma.youcode.smartbank.dao.interfaces.GenericDao;
-import ma.youcode.smartbank.entities.Request;
+import ma.youcode.smartbank.daos.interfaces.GenericDao;
 import ma.youcode.smartbank.singleton.HibernateTools;
 
 import java.util.ArrayList;

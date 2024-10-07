@@ -1,6 +1,6 @@
 package ma.youcode.smartbank.services.implementations;
 
-import ma.youcode.smartbank.dao.interfaces.RequestDao;
+import ma.youcode.smartbank.daos.interfaces.RequestDao;
 import ma.youcode.smartbank.entities.Request;
 import ma.youcode.smartbank.services.interfaces.RequestService;
 
