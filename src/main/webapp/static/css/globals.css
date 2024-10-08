@@ -951,4 +951,78 @@ tbody tr:hover {
     border: 1px solid #FFBC49;
     box-shadow: 0 0 2px 2px #FFBC49;
 }
+.update_form_container{
+    /*width: 100%;*/
+    /*height : 100vh;*/
+}
+.update_form_container .popup_wrapper .form_wrapper{
+    position: relative;
+    z-index: 20;
+    min-width: 500px;
+}
+.update_form_container .popup_wrapper  .form_wrapper {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 10px;
+    overflow:hidden;
+}
+.parts__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 31.25rem;
+    margin: 0 auto;
+}
+.parts__wrapper .part {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+.parts__wrapper .part .number_part {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    font-weight: bold;
+    font-size: 18px;
+    color: rgba(98, 96, 96, 0.96);
+    border-radius: 100%;
+    border: 3px solid #BDB8B8F4;
+
+}
+.parts__wrapper .part .line {
+    height: 2px;
+    width: 90px;
+    margin: 0 6px;
+    background-color: #BDB8B8F4;
+}
+.parts__wrapper .part.active .number_part {
+    background-color: var(--color-secondary);
+    border: 3px solid var(--color-secondary);
+    color: #fff;
+
+}
+.parts__wrapper .part.passed .number_part,
+.parts__wrapper .part.passed .line{
+    background-color: var(--color-secondary);
+
+}
+.parts__wrapper .part.passed .number_part{
+    border: 3px solid var(--color-secondary);
+    color: #fff;
+
+}
+.parts__wrapper .part .number_part .collections_btn {
+    width: 100%;
+    display: flex;
+    align-items: end;
+    justify-content: start;
+}
+.parts__wrapper .part .number_part .collections_btn button {
+    padding: 10px 20px !important;
+    display: inline-block;
+}
+
+
 /*# sourceMappingURL=globals.css.map */

@@ -1,17 +1,14 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: youcode
-  Date: 10/4/24
-  Time: 12:10 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Voir tous les demande </title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/globals.css">
     <script type="module" defer src="${pageContext.request.contextPath}/static/js/list-requests.js"></script>
+    <script type="module" defer src="${pageContext.request.contextPath}/static/js/simulator.js"></script>
+
     <link rel="icon" href="../static/img/favicon-16x16.png"/>
 </head>
 <body>
@@ -21,12 +18,12 @@
             <h2>Tableau des Demandes</h2>
             <div class="wrapper_inputs">
                <label for="search-input"  class="custom_txt">
-                   <input type="text" name="query" id="search-input" placeholder="Search...">
+                   <input type="text" name="query" id="search-input" placeholder="Search by name...">
                </label>
                 <label for="date-input" class="custom-date">
                     <input type="date" id="date-input" placeholder="Enter date">
                 </label>
-
+                <button class="search" id="btn_search" type="submit">Search</button>
             </div>
         </div>
         <div class="table_item">
@@ -79,8 +76,8 @@
                                 <button  class="action_btn view" type="button"  >
                                     View
                                 </button>
-                                <button class="action_btn update"  type="button" id="update">Edit</button>
-                                <button class="action_btn delete"  type="button" id="delete">
+                                <button class="action_btn update"  type="button"  >Edit</button>
+                                <button class="action_btn delete"  type="button"  data-id="${request.requestId}">
                                     Supp
                                 </button>
                             </div>
@@ -131,7 +128,10 @@
             </table>
         </div>
     </div>
+<%--    <jsp:include page="components/update-form.jsp"/>--%>
 
 </div>
+
+
 </body>
 </html>

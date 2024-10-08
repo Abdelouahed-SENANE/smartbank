@@ -1,6 +1,7 @@
 package ma.youcode.smartbank.daos.implementations;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import ma.youcode.smartbank.daos.interfaces.GenericDao;
 import ma.youcode.smartbank.singleton.HibernateTools;
@@ -42,7 +43,18 @@ public abstract class GenericDaoImpl<T, ID> implements GenericDao<T, ID> {
 
     @Override
     public void update(T entity) {
+        EntityManager entityManager = getEntityManager();
 
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.merge(entity);
+            entityManager.getTransaction().commit();
+        }catch (Exception e) {
+            if (entityManager.getTransaction().isActive()){
+                entityManager.getTransaction().rollback();
+            }
+            throw new RuntimeException("Error to update  : " + e.getMessage());
+        }
     }
 
     @Override
@@ -60,7 +72,7 @@ public abstract class GenericDaoImpl<T, ID> implements GenericDao<T, ID> {
             if (entityManager.getTransaction().isActive()){
                 entityManager.getTransaction().rollback();
             }
-            e.printStackTrace();
+            throw new RuntimeException("Error to retrieve data " + e.getMessage());
         }finally {
             entityManager.close();
         }
@@ -72,5 +84,21 @@ public abstract class GenericDaoImpl<T, ID> implements GenericDao<T, ID> {
         return Optional.empty();
     }
 
+    @Override
+    public void delete(T entity) {
+        EntityManager entityManager = getEntityManager();
 
+        try {
+            entityManager.getTransaction().begin();
+            T mergedEntity = entityManager.merge(entity);
+            entityManager.remove(mergedEntity);
+            entityManager.getTransaction().commit();
+        }catch (Exception e) {
+            if (entityManager.getTransaction().isActive()){
+                entityManager.getTransaction().rollback();
+            }
+            throw new RuntimeException("Error to delete this : " + e.getMessage());
+        }
+
+    }
 }

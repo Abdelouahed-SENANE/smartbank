@@ -1,7 +1,7 @@
 // Declaration des globals VAriable;
 import {JOB_CONFIG, PROJECT_CONFIG} from "./config.js";
 import {calcMonthly, calcMonths} from "./caculator.js";
-import {save} from "./requests.js";
+import {doSave} from "./requests.js";
 
 const selectedProject = document.getElementById("project")
 const selectedJob = document.getElementById("profession")
@@ -133,7 +133,7 @@ submit.addEventListener("click", async (e) => {
 
     if (payload) {
         try {
-            const data = await  save(payload)
+            const data = await  doSave(payload)
             showToast(data.status , data.message);
         }catch (e){
             console.error(e)

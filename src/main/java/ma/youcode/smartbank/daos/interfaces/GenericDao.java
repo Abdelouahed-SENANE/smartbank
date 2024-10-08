@@ -10,5 +10,5 @@ public interface GenericDao<T , ID> {
     Optional<T> findById(ID id);
     void update(T entity);
     List<Optional<T>> findAll();
-
+    void delete(T entity);
 }

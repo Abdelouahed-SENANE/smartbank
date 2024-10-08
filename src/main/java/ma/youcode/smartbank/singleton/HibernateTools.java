@@ -24,8 +24,5 @@ public class HibernateTools {
         return entityManagerFactory.createEntityManager();
     }
 
-    public void close() {
-        entityManagerFactory.close();
-    }
 
 }
