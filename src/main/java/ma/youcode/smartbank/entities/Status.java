@@ -17,7 +17,7 @@ public class Status {
     private String statusName;
 
     @OneToMany(mappedBy = "status")
-    private List<History> statusHistories = new ArrayList<>();
+    private List<History> histories = new ArrayList<>();
 
     public Status(){}
 
@@ -30,10 +30,10 @@ public class Status {
     }
 
     public List<History> getStatusHistories() {
-        return statusHistories;
+        return histories;
     }
 
     public void addHistories(History history) {
-        statusHistories.add(history);
+        histories.add(history);
     }
 }

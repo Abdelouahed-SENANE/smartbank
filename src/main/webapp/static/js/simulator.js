@@ -136,7 +136,7 @@ submit.addEventListener("click", async (e) => {
         try {
             const data = await  doSave(payload)
             console.log(data)
-            showToast(data.status , data.message , "/creer");
+            showToast(data.status , data.message , "creer");
         }catch (e){
             console.error(e)
         }

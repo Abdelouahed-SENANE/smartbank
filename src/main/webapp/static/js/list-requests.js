@@ -21,19 +21,19 @@ function toggleHistories(index) {
     }
 }
 
-const btnSearch = document.getElementById("btn_search");
-
-btnSearch.addEventListener("click" ,  async (e) => {
-    console.log(e.target)
-    const textValue = document.getElementById("search-input").value;
-    const dateValue = document.getElementById("date-input").value
-    const payload = {
-        creationDate : dateValue,
-        name : textValue
-    }
-     const data = await getFilteredRequests(payload)
-    console.log(data);
-})
+// const btnSearch = document.getElementById("btn_search");
+//
+// btnSearch.addEventListener("click" ,  async (e) => {
+//     console.log(e.target)
+//     const textValue = document.getElementById("search-input").value;
+//     const dateValue = document.getElementById("date-input").value
+//     const payload = {
+//         creationDate : dateValue,
+//         name : textValue
+//     }
+//      const data = await getFilteredRequests(payload)
+//     console.log(data);
+// })
 
 
 const btnsDel = document.querySelectorAll(".delete");

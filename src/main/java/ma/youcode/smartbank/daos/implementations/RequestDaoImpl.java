@@ -1,7 +1,6 @@
 package ma.youcode.smartbank.daos.implementations;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import ma.youcode.smartbank.daos.interfaces.RequestDao;
@@ -11,12 +10,14 @@ import ma.youcode.smartbank.entities.Request;
 import ma.youcode.smartbank.singleton.HibernateTools;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class RequestDaoImpl extends GenericDaoImpl<Request , UUID> implements RequestDao {
     public RequestDaoImpl(){
         super(Request.class);
     }
+    private final Logger logger = Logger.getLogger(RequestDaoImpl.class.getName());
 
     @Override
     public List<Optional<Request>> findAllRequestsWithStatuses() {
@@ -26,7 +27,7 @@ public class RequestDaoImpl extends GenericDaoImpl<Request , UUID> implements Re
         try{
             entityManager.getTransaction().begin();
             String queryString = "SELECT  r  FROM Request r " +
-                    " LEFT JOIN FETCH r.statusHistories sh" +
+                    " LEFT JOIN FETCH r.histories sh" +
                     " ORDER BY sh.changedAt DESC ";
             TypedQuery<Request> query = entityManager.createQuery(queryString , Request.class);
             List<Request> listResult = query.getResultList();
@@ -56,46 +57,38 @@ public class RequestDaoImpl extends GenericDaoImpl<Request , UUID> implements Re
         EntityManager entityManager = HibernateTools.getInstance().getEntityManager();
 
         try {
-
             entityManager.getTransaction().begin();
             if (filterDTO != null) {
-                StringBuilder queryString = new StringBuilder("SELECT r FROM Request r LEFT JOIN FETCH r.statusHistories WHERE 1=1");
-                boolean hasFilters = false;
-                if (filterDTO.getName() != null && !filterDTO.getName().isEmpty()) {
-                    queryString.append(" AND r.lastname LIKE :lastname");
-                    hasFilters = true;
+                StringBuilder hql = new StringBuilder(
+                        "SELECT r FROM Request r" +
+                        " JOIN FETCH r.histories h" +
+                        " WHERE h.changedAt = ( " +
+                        "SELECT MAX(h2.changedAt) FROM History" +
+                        " h2 WHERE h2.request.requestId = r.requestId " +
+                        ")");
+
+                if (filterDTO.getStatusName() != null && !filterDTO.getStatusName().isEmpty()) {
+                    hql.append(" AND h.status.statusName LIKE :statusName");
+                }
+                if (filterDTO.getCreationDate() != null ) {
+                    hql.append(" AND DATE(r.createdAt) = :createdAt");
                 }
 
-                if (filterDTO.getCreationDate() != null) {
-                    queryString.append(" AND r.createdat LIKE :createdAt");
-                    hasFilters = true;
+                TypedQuery<Request> query = entityManager.createQuery(hql.toString() , Request.class);
+
+                if (filterDTO.getStatusName() != null && !filterDTO.getStatusName().isEmpty()){
+                    query.setParameter("statusName" , "%" + filterDTO.getStatusName() + "%");
                 }
-
-                if (!hasFilters) {
-                    return Collections.emptyList();
+                if (filterDTO.getCreationDate() != null ) {
+                    query.setParameter("createdAt" , java.sql.Date.valueOf(filterDTO.getCreationDate()));
                 }
-
-                TypedQuery<Request> query = entityManager.createQuery(queryString.toString(), Request.class);
-
-                if (filterDTO.getName() != null && !filterDTO.getName().isEmpty()) {
-                    query.setParameter("lastName", "%" + filterDTO.getName() + "%");
-                }
-
-                if (filterDTO.getCreationDate() != null) {
-                    query.setParameter("createdAt", filterDTO.getCreationDate());
-                }
-
-                List<Request> test = query.getResultList();
-                filteredRequests = query.getResultList().stream().map(Optional::of).toList();
-                System.out.println("Filtered Requests: " + filteredRequests);
+                filteredRequests = query.getResultStream().map(Optional::of).toList();
             }
             entityManager.getTransaction().commit();
-
         } catch (Exception e) {
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
             }
-
             e.printStackTrace();
         } finally {
             entityManager.close();

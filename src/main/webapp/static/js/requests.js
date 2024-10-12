@@ -63,7 +63,6 @@ export const doSaveHistory = async (payload) => {
 
     try {
         const data = await request(`http://localhost:8080/demandes/save-history`, "POST", payload)
-        console.log(data)
         return data;
     } catch (e) {
         console.log(e);

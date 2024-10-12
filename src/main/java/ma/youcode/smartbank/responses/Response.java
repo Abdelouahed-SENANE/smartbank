@@ -7,6 +7,8 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.validation.ConstraintViolation;
 import ma.youcode.smartbank.dtos.RequestFilterDTO;
+import ma.youcode.smartbank.entities.History;
+import ma.youcode.smartbank.entities.Request;
 
 import java.lang.reflect.Field;
 import java.util.Date;
@@ -19,16 +21,14 @@ public class Response<T> {
 
     public Response() {}
 
-    public static <T> String success(String message , int status ,List<Optional<T>> data) {
+    public static  String success(String message , int status ,List<Optional<Request>> data) {
         JsonArrayBuilder dataArray = Json.createArrayBuilder();
         if (data != null) {
-            for (Optional<T> optionalItem : data) {
-                if (optionalItem.isPresent()) {
-                     T entity = optionalItem.get();
-                    JsonObject requestJson = buildJsonFromEntity(entity);
-                    dataArray.add(requestJson);
-                }
-            }
+            data.stream()
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .map(request -> requestToJson(request))
+                    .forEach(dataArray::add);
         }
 
         JsonObject buildJson = Json.createObjectBuilder()
@@ -58,29 +58,45 @@ public class Response<T> {
         return buildJson.toString();
     }
 
-
-    private static <T> JsonObject buildJsonFromEntity(T entity) {
+    public static JsonObject requestToJson(Request request) {
         JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 
-        Field[] fields = entity.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true); // Allow access to private fields
-            try {
-                Object value = field.get(entity);
-                if (value != null) {
-                    if (value instanceof String || value instanceof Number) {
-                        jsonBuilder.add(field.getName(), value.toString());
-                    } else if (value instanceof java.util.Date) {
-                        jsonBuilder.add(field.getName(), ((Date) value).toString());
-                    } else {
-                        jsonBuilder.add(field.getName(), value.toString());
-                    }
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+        jsonBuilder.add("requestId", request.getRequestId().toString());
+        jsonBuilder.add("projectName", request.getProjectName());
+        jsonBuilder.add("jobName", request.getJobName());
+        jsonBuilder.add("amount", request.getAmount());
+        jsonBuilder.add("civility", request.getCivility());
+        jsonBuilder.add("duration", request.getDuration());
+        jsonBuilder.add("monthly", request.getMonthly());
+        jsonBuilder.add("email", request.getEmail());
+        jsonBuilder.add("phone", request.getPhone());
+        jsonBuilder.add("lastname", request.getLastname());
+        jsonBuilder.add("firstname", request.getFirstname());
+        jsonBuilder.add("cin", request.getCin());
+        jsonBuilder.add("birthday", request.getBirthday().toString());
+        jsonBuilder.add("dateOfHire", request.getDateOfHire().toString());
+        jsonBuilder.add("income", request.getIncome());
+        jsonBuilder.add("fees", request.getFees());
+
+        if (request.getStatusHistories() != null) {
+            JsonArrayBuilder historiesArray = Json.createArrayBuilder();
+            for (History history : request.getStatusHistories()) {
+                historiesArray.add(historyToJson(history));
             }
+            jsonBuilder.add("histories", historiesArray);
         }
 
         return jsonBuilder.build();
     }
+
+    private static JsonObject historyToJson(History history) {
+
+        return Json.createObjectBuilder()
+                .add("historyId", history.getHistoryId().toString())
+                .add("status", history.getStatus().toString())
+                .add("request", history.getRequest().toString())
+                .add("changedAt", history.getChangedAt().toString())
+                .build();
+    }
+
 }

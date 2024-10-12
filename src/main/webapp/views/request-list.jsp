@@ -17,15 +17,21 @@
     <div class="table_wrapper">
         <div class="_header">
             <h2>Tableau des Demandes</h2>
-            <div class="wrapper_inputs">
-               <label for="search-input"  class="custom_txt">
-                   <input type="text" name="query" id="search-input" placeholder="Search by name...">
-               </label>
-                <label for="date-input" class="custom-date">
-                    <input type="date" id="date-input" placeholder="Enter date">
-                </label>
-                <button class="search" id="btn_search" type="submit">Search</button>
-            </div>
+            <form action="/demandes/filter" method="GET">
+                <div class="wrapper_inputs">
+                    <label for="search-input"  class="custom_txt">
+                        <input type="text" name="status" id="search-input" placeholder="Search by status...">
+                    </label>
+                    <label for="date-input" class="custom-date">
+                        <input type="date" name="creationDate" id="date-input" placeholder="Enter date">
+                    </label>
+                    <button class="search" id="btn_search" type="submit">Search</button>
+                    <button class="search" type="reset">
+                        <a href="http://localhost:8080/demandes/liste">Reset</a>
+                    </button>
+
+                </div>
+            </form>
         </div>
         <div class="table_item">
             <table>
@@ -47,6 +53,7 @@
                     <th class="column_14">Nom de projet</th>
                     <th class="column_15">Civilite</th>
                     <th class="column_16">Etat</th>
+                    <th class="column_2">Date de creation</th>
                     <th class="column_17">Date d'embauche</th>
                     <th class="column_18">Actions</th>
 
@@ -72,6 +79,7 @@
                         <td class="column_14">${request.projectName}</td>
                         <td class="column_15">${request.civility}</td>
                         <td class="column_16">${(request.statusHistories[0].status.statusName).toLowerCase()}</td>
+                        <td class="column_2">${request.createdAt}</td>
                         <td class="column_17">${(request.dateOfHire)}</td>
 
 

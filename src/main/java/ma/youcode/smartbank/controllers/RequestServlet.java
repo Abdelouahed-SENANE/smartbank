@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolation;
 
 import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 import ma.youcode.smartbank.dtos.RequestFilterDTO;
 import ma.youcode.smartbank.entities.Request;
 import ma.youcode.smartbank.entities.History;
@@ -21,20 +20,20 @@ import ma.youcode.smartbank.responses.Response;
 
 import ma.youcode.smartbank.services.interfaces.RequestService;
 import ma.youcode.smartbank.services.interfaces.HistoryService;
-import ma.youcode.smartbank.services.interfaces.StatusService;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.logging.Logger;
 
 @WebServlet
 @MultipartConfig
 
 @RequestScoped
 public class RequestServlet extends HttpServlet {
-
+    private final Logger logger = Logger.getLogger(RequestServlet.class.getName());
     @Inject
     private RequestService requestService;
     @Inject
@@ -87,7 +86,7 @@ public class RequestServlet extends HttpServlet {
     }
 
 
-    private void save(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+    private void save(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
 
@@ -127,7 +126,7 @@ public class RequestServlet extends HttpServlet {
 
         try {
             requestService.save(request);
-            res.getWriter().write(new Response().success("Votre demande a été ajoutée avec succès.", 200 , null));
+            res.getWriter().write(Response.success("Votre demande a été ajoutée avec succès.", 200 , null));
         } catch (Exception e) {
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             res.getWriter().write(Response.error("Votre demande n'a pas été ajoutée avec succès.", 401 , null));
@@ -135,6 +134,7 @@ public class RequestServlet extends HttpServlet {
         }
 
     }
+
     private void update(HttpServletRequest req,HttpServletResponse res) throws IOException  {
 
         res.setContentType("application/json");
@@ -145,41 +145,41 @@ public class RequestServlet extends HttpServlet {
             res.getWriter().write(Response.error("Cannot update this Entity" , 401 , null));
             return;
         }
-        UUID requestId = UUID.fromString(req.getParameter("requestId"));
-        String email = req.getParameter("email");
-        String project = req.getParameter("project");
-        String job = req.getParameter("job");
-        String amount = req.getParameter("amount");
-        String duration = req.getParameter("duration");
-        String monthly = req.getParameter("monthly");
-        String fees = req.getParameter("fees");
-        String phone = req.getParameter("phone");
-        String civility = req.getParameter("civility");
-        String lastName = req.getParameter("last_name");
-        String firstName = req.getParameter("first_name");
-        String cin = req.getParameter("cin");
-        String birthDate = req.getParameter("birth_date");
-        String hiringDate = req.getParameter("hiring_date");
-        String income = req.getParameter("income");
+        UUID updatedRequestId = UUID.fromString(req.getParameter("requestId"));
+        String updatedEmail = req.getParameter("email");
+        String updatedProject = req.getParameter("project");
+        String updatedJob = req.getParameter("job");
+        String updatedAmount = req.getParameter("amount");
+        String updatedDuration = req.getParameter("duration");
+        String updatedMonthly = req.getParameter("monthly");
+        String updatedFees = req.getParameter("fees");
+        String updatedPhone = req.getParameter("phone");
+        String updatedCivility = req.getParameter("civility");
+        String updatedLastName = req.getParameter("last_name");
+        String updatedFirstName = req.getParameter("first_name");
+        String updatedCin = req.getParameter("cin");
+        String updatedBirthDate = req.getParameter("birth_date");
+        String updatedHiringDate = req.getParameter("hiring_date");
+        String updatedIncome = req.getParameter("income");
 
         Request updatedRequest = new Request();
-        updatedRequest.setRequestId(requestId);
-        updatedRequest.setAmount(Double.parseDouble(amount));
-        updatedRequest.setCin(cin);
-        updatedRequest.setEmail(email);
-        updatedRequest.setFirstname(firstName);
-        updatedRequest.setLastname(lastName);
-        updatedRequest.setMonthly(Double.parseDouble(monthly));
-        updatedRequest.setIncome(Double.parseDouble(income));
-        updatedRequest.setFees(Double.parseDouble(fees));
-        updatedRequest.setCivility(civility);
-        updatedRequest.setDuration(Integer.parseInt(duration));
-        updatedRequest.setJobName(job);
-        updatedRequest.setPhone(phone);
+        updatedRequest.setRequestId(updatedRequestId);
+        updatedRequest.setAmount(Double.parseDouble(updatedAmount));
+        updatedRequest.setCin(updatedCin);
+        updatedRequest.setEmail(updatedEmail);
+        updatedRequest.setFirstname(updatedFirstName);
+        updatedRequest.setLastname(updatedLastName);
+        updatedRequest.setMonthly(Double.parseDouble(updatedMonthly));
+        updatedRequest.setIncome(Double.parseDouble(updatedIncome));
+        updatedRequest.setFees(Double.parseDouble(updatedFees));
+        updatedRequest.setCivility(updatedCivility);
+        updatedRequest.setDuration(Integer.parseInt(updatedDuration));
+        updatedRequest.setJobName(updatedJob);
+        updatedRequest.setPhone(updatedPhone);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        updatedRequest.setBirthday(LocalDate.parse(birthDate , formatter));
-        updatedRequest.setDateOfHire(LocalDate.parse(hiringDate , formatter));
-        updatedRequest.setProjectName(project);
+        updatedRequest.setBirthday(LocalDate.parse(updatedBirthDate , formatter));
+        updatedRequest.setDateOfHire(LocalDate.parse(updatedHiringDate , formatter));
+        updatedRequest.setProjectName(updatedProject);
 
 
         Set<ConstraintViolation<Request>> violations = validator.validate(updatedRequest);
@@ -202,6 +202,7 @@ public class RequestServlet extends HttpServlet {
         }
 
     }
+
     private void delete(HttpServletRequest req , HttpServletResponse res) throws IOException   {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
@@ -243,15 +244,13 @@ public class RequestServlet extends HttpServlet {
         req.getRequestDispatcher("/views/request-list.jsp").include(req, res);
     }
 
-    private void filter(HttpServletRequest req, HttpServletResponse res) throws IOException {
-
-        res.setContentType("application/json");
-        String searchParam = req.getParameter("name");
+    private void filter(HttpServletRequest req, HttpServletResponse res) throws IOException , ServletException{
+        String statusParam = req.getParameter("status");
         String dateParam = req.getParameter("creationDate");
 
         RequestFilterDTO filterDTO = new RequestFilterDTO();
 
-        filterDTO.setName(searchParam);
+        filterDTO.setStatusName(statusParam);
         if (dateParam != null && !dateParam.trim().isEmpty()) {
             DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             try {
@@ -271,14 +270,13 @@ public class RequestServlet extends HttpServlet {
             res.getWriter().write(Response.error("An Error occurred " , 400 , violations));
             return;
         }
+        List<Optional<Request>> optionalList = requestService.getFilteredRequests(filterDTO);
 
-        List<Optional<Request>> requestsFiltered = requestService.getFilteredRequests(filterDTO);
+        List<Request> requests = optionalList.stream().filter(Optional::isPresent).map(Optional::get).toList();
 
-        if(!requestsFiltered.isEmpty()) {
-            res.getWriter().write(Response.success("Data has been retrieve successfully", 200 , requestsFiltered));
-        }else {
-            res.getWriter().write(Response.success("Data not exists", 404 , null));
-        }
+        req.setAttribute("requests", requests);
+        req.getRequestDispatcher("/views/request-list.jsp").forward(req, res);
+
 
     }
 
@@ -300,11 +298,6 @@ public class RequestServlet extends HttpServlet {
         }catch (IllegalArgumentException e) {
             res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             res.getWriter().write(Response.success("le status n'est pas ajouter correctement", 404 , null));
-        } catch (Exception e) {
-            // Handle general exceptions (500 Internal Server Error)
-            res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            res.getWriter().write(Response.success("Une erreur interne est survenue", 500, null));
-            e.printStackTrace(); // Log the exception for debugging
         }
 
     }

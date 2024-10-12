@@ -9,7 +9,7 @@
 <body>
 <div class="landing">
     <button class="link">
-        <a href="http://localhost:8080/demandes/liste">Admin</a>
+        <a href="http://localhost:8080/demandes/liste">Gestion des demandes</a>
     </button>
     <button class="link">
         <a href="http://localhost:8080/demandes/creer"> Simulateur de Crédit</a>

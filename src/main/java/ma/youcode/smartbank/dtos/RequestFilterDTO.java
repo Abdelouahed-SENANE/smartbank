@@ -7,10 +7,8 @@ import java.time.LocalDate;
 
 public class RequestFilterDTO {
 
-    @NotEmpty(message = "name cannot be empty")
-    private String name;
+    private String statusName;
 
-    @NotNull(message = "date cannot be empty")
     private LocalDate creationDate;
 
     public LocalDate getCreationDate() {
@@ -21,11 +19,11 @@ public class RequestFilterDTO {
         this.creationDate = creationDate;
     }
 
-    public  String getName() {
-        return name;
+    public  String getStatusName() {
+        return statusName.toUpperCase();
     }
 
-    public void setName( String name) {
-        this.name = name;
+    public void setStatusName( String name) {
+        this.statusName = name;
     }
 }

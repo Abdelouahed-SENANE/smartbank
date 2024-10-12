@@ -1,12 +1,15 @@
 package ma.youcode.smartbank.entities;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import jdk.jfr.Timestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "requests")
@@ -65,10 +68,16 @@ public class Request {
     private double income;
 
     @OneToMany(mappedBy = "request")
-    private List<History> statusHistories = new ArrayList<>();
+    private List<History> histories = new ArrayList<>();
 
     @Positive(message = "Fees must be positive")
     private double fees;
+    @UpdateTimestamp
+    private LocalDateTime createdAt;
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
     public Request() {}
 
@@ -201,11 +210,11 @@ public class Request {
     }
 
     public List<History> getStatusHistories() {
-        return statusHistories;
+        return histories;
     }
 
     public void addStatus(Status status) {
         History history = new History(this, status);
-        statusHistories.add(history);
+        histories.add(history);
     }
 }

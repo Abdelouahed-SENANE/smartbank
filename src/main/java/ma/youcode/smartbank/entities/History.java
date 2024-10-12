@@ -14,12 +14,12 @@ public class History {
     @GeneratedValue(generator = "UUID")
     private  UUID historyId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "requestid", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "requestId", nullable = false)
     private Request request;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "statusname" , nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "statusName" , nullable = false)
     private Status status;
 
     @UpdateTimestamp
