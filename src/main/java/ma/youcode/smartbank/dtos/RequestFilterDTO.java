@@ -20,7 +20,7 @@ public class RequestFilterDTO {
     }
 
     public  String getStatusName() {
-        return statusName.toUpperCase();
+        return statusName;
     }
 
     public void setStatusName( String name) {

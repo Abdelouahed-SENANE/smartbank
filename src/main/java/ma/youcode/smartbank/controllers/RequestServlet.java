@@ -54,9 +54,6 @@ public class RequestServlet extends HttpServlet {
             case "/liste":
                 list(req, res);
                 break;
-            case "/filter":
-                filter(req, res);
-                break;
             default:
                 res.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
         }
@@ -237,14 +234,7 @@ public class RequestServlet extends HttpServlet {
         req.getRequestDispatcher("/views/create-request.jsp").include(req, res);
     }
 
-    private void list(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        List<Optional<Request>> optionalsRequests = requestService.getAllRequestsAndStatuses();
-        List<Request> requests = optionalsRequests.stream().filter(Optional::isPresent).map(Optional::get).toList();
-        req.setAttribute("requests", requests);
-        req.getRequestDispatcher("/views/request-list.jsp").include(req, res);
-    }
-
-    private void filter(HttpServletRequest req, HttpServletResponse res) throws IOException , ServletException{
+    private void list(HttpServletRequest req, HttpServletResponse res) throws IOException , ServletException{
         String statusParam = req.getParameter("status");
         String dateParam = req.getParameter("creationDate");
 
@@ -263,19 +253,12 @@ public class RequestServlet extends HttpServlet {
             }
         }
 
-
-        Set<ConstraintViolation<RequestFilterDTO>> violations = validator.validate(filterDTO);
-        if (!violations.isEmpty()) {
-            res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            res.getWriter().write(Response.error("An Error occurred " , 400 , violations));
-            return;
-        }
         List<Optional<Request>> optionalList = requestService.getFilteredRequests(filterDTO);
 
         List<Request> requests = optionalList.stream().filter(Optional::isPresent).map(Optional::get).toList();
 
         req.setAttribute("requests", requests);
-        req.getRequestDispatcher("/views/request-list.jsp").forward(req, res);
+        req.getRequestDispatcher("/views/request-list.jsp").include(req, res);
 
 
     }

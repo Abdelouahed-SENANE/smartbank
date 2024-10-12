@@ -77,7 +77,7 @@ public class RequestDaoImpl extends GenericDaoImpl<Request , UUID> implements Re
                 TypedQuery<Request> query = entityManager.createQuery(hql.toString() , Request.class);
 
                 if (filterDTO.getStatusName() != null && !filterDTO.getStatusName().isEmpty()){
-                    query.setParameter("statusName" , "%" + filterDTO.getStatusName() + "%");
+                    query.setParameter("statusName" , "%" + filterDTO.getStatusName().toUpperCase() + "%");
                 }
                 if (filterDTO.getCreationDate() != null ) {
                     query.setParameter("createdAt" , java.sql.Date.valueOf(filterDTO.getCreationDate()));
