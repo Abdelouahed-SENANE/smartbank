@@ -19,9 +19,20 @@
             <h2>Tableau des Demandes</h2>
             <form action="/demandes/liste" method="GET">
                 <div class="wrapper_inputs">
-                    <label for="search-input"  class="custom_txt">
-                        <input type="text" name="status" id="search-input" placeholder="Search by status...">
-                    </label>
+                    <div >
+                        <div class="select_group">
+                            <select name="status" >
+                                <option  value="">Sélectionnez un statut</option>
+                                <option value="EN ATTENTE">En attente</option>
+                                <option value="APPROUVÉ">Approuvé</option>
+                                <option value="REJETÉ">Rejeté</option>
+                                <option value="TERMINÉ" >Terminé</option>
+                            </select>
+                        </div>
+                    </div>
+<%--                    <label for="search-input"  class="custom_txt">--%>
+<%--                        <input type="text" name="status" id="search-input" placeholder="Search by status...">--%>
+<%--                    </label>--%>
                     <label for="date-input" class="custom-date">
                         <input type="date" name="creationDate" id="date-input" placeholder="Enter date">
                     </label>
