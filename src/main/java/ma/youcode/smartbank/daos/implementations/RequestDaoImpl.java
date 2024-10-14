@@ -61,11 +61,11 @@ public class RequestDaoImpl extends GenericDaoImpl<Request , UUID> implements Re
             if (filterDTO != null) {
                 StringBuilder hql = new StringBuilder(
                         "SELECT r FROM Request r" +
-                        " JOIN FETCH r.histories h" +
-                        " WHERE h.changedAt = ( " +
-                        "SELECT MAX(h2.changedAt) FROM History" +
-                        " h2 WHERE h2.request.requestId = r.requestId " +
-                        ")");
+                                " LEFT JOIN FETCH r.histories h" +
+                                " WHERE h.changedAt = ( " +
+                                "SELECT MAX(h2.changedAt) FROM History" +
+                                " h2 WHERE h2.request.requestId = r.requestId " +
+                                ")");
 
                 if (filterDTO.getStatusName() != null && !filterDTO.getStatusName().isEmpty()) {
                     hql.append(" AND h.status.statusName LIKE :statusName");

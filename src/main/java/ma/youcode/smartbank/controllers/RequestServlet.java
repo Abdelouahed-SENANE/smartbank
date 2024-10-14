@@ -237,10 +237,13 @@ public class RequestServlet extends HttpServlet {
     private void list(HttpServletRequest req, HttpServletResponse res) throws IOException , ServletException{
         String statusParam = req.getParameter("status");
         String dateParam = req.getParameter("creationDate");
-
         RequestFilterDTO filterDTO = new RequestFilterDTO();
+        List<Optional<Request>> optionalList = new ArrayList<>();
 
-        filterDTO.setStatusName(statusParam);
+        if (statusParam != null && !statusParam.trim().isEmpty()){
+            filterDTO.setStatusName(statusParam);
+        }
+
         if (dateParam != null && !dateParam.trim().isEmpty()) {
             DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             try {
@@ -252,8 +255,11 @@ public class RequestServlet extends HttpServlet {
                 return;
             }
         }
-
-        List<Optional<Request>> optionalList = requestService.getFilteredRequests(filterDTO);
+        if (statusParam != null || dateParam != null) {
+            optionalList = requestService.getFilteredRequests(filterDTO);
+        }else {
+            optionalList = requestService.getAllRequestsAndStatuses();
+        }
 
         List<Request> requests = optionalList.stream().filter(Optional::isPresent).map(Optional::get).toList();
 
